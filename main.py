@@ -5,6 +5,7 @@ import camera
 #import cell
 
 os.environ['SDL_VIDEO_CENTERED'] = '1'
+clock = pygame.time.Clock()
 
 #grid = cell.Cell("cell")
 
@@ -53,6 +54,8 @@ def main():
         #grid.handle_event(screen, event)
 
         pygame.display.update()
+
+        clock.tick(20)
         
     pygame.quit()
 
