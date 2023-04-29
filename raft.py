@@ -4,16 +4,20 @@ class Raft(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
 
-        self.sheet = pygame.image.load('raft-move.png') #carrega imagem
-        self.sheet.set_clip(pygame.Rect(0, 0, 144, 188)) #define uma área retangular
-        self.image = self.sheet.subsurface(self.sheet.get_clip()) #pega a área retangular definida e seta como imagem do sprite
+        self.moving = False
 
-        self.rect = self.image.get_rect()
         self.frame = 0
+        self.frame_change = 0
         self.left_states = { 0: (9, 472, 144, 188), 1: (174, 472, 144, 188), 2: (336, 472, 144, 188), 3: (500, 472, 144, 188) }
         self.down_states = { 0: (9, 47, 144, 188), 1: (174, 47, 144, 188), 2: (336, 47, 144, 188), 3: (500, 47, 144, 188) }
         self.up_states = { 0: (9, 656, 144, 188), 1: (174, 656, 144, 188), 2: (336, 656, 144, 188), 3: (500, 656, 144, 188) }
         self.right_states = { 0: (9, 243, 144, 188), 1: (174, 243, 144, 188), 2: (336, 243, 144, 188), 3: (500, 243, 144, 188) }
+
+        self.state = self.right_states
+
+        self.change_image(self.state)
+
+        self.rect = self.image.get_rect()
 
         self.center = pygame.math.Vector2(144/2, 188/2)
 
@@ -31,29 +35,48 @@ class Raft(pygame.sprite.Sprite):
         return clipped_rect
 
     def update(self, direction):
+        state_ant = self.state
+        self.frame_change += 1
+        moving_ant = self.moving
+
         if direction == 'left':
-            self.clip(self.left_states) #chama o método clip passando a lista com as posições
             self.rect.x -= 5
+            self.moving = True
+            self.state = self.left_states
         if direction == 'right':
-            self.clip(self.right_states)
             self.rect.x += 5
+            self.moving = True
+            self.state = self.right_states
         if direction == 'up':
-            self.clip(self.up_states)
             self.rect.y -= 5
+            self.moving = True
+            self.state = self.up_states
         if direction == 'down':
-            self.clip(self.down_states)
             self.rect.y += 5
+            self.moving = True
+            self.state = self.down_states
 
         #aqui ele "para" virado para o lado que estava indo
         if direction == 'stand_left':
-            self.clip(self.left_states[0])
+            self.moving = False
+            self.state = self.left_states
         if direction == 'stand_right':
-            self.clip(self.right_states[0])
+            self.moving = False
+            self.state = self.right_states
         if direction == 'stand_up':
-            self.clip(self.up_states[0])
+            self.moving = False
+            self.state = self.up_states
         if direction == 'stand_down':
-            self.clip(self.down_states[0])
+            self.moving = False
+            self.state = self.down_states
 
+        if (moving_ant != self.moving) :
+            self.change_image(self.state)
+
+        if self.frame_change > 10 or state_ant != self.state:
+            self.frame_change = 0
+            self.clip(self.state)
+        
         self.image = self.sheet.subsurface(self.sheet.get_clip())
 
     def handle_event(self, event): #trata o evento que foi repassado pela main
@@ -82,3 +105,7 @@ class Raft(pygame.sprite.Sprite):
             if event.key == pygame.K_DOWN:
                 self.update('stand_down')
 
+    def change_image(self, clipped_rect):
+        self.sheet = pygame.image.load('raft-move.png' if self.moving else 'raft_idle.png') #carrega imagem
+        self.sheet.set_clip(pygame.Rect(self.get_frame(clipped_rect)))
+        self.image = self.sheet.subsurface(self.sheet.get_clip()) #pega a área retangular definida e seta como imagem do sprite
