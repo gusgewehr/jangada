@@ -80,6 +80,7 @@ class Raft(pygame.sprite.Sprite):
         self.image = self.sheet.subsurface(self.sheet.get_clip())
 
     def handle_event(self, event): #trata o evento que foi repassado pela main
+        #print(event)
         if event.type == pygame.QUIT:
             game_over = True
 

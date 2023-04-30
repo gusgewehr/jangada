@@ -1,7 +1,9 @@
 import os
+import random
 import pygame
 import raft
 import camera
+import island
 #import cell
 
 os.environ['SDL_VIDEO_CENTERED'] = '1'
@@ -14,6 +16,13 @@ WATER = (65,159,204)
 raft = raft.Raft()
 all_sprites = pygame.sprite.Group()
 all_sprites.add(raft)
+
+islands_x = random.sample(range(-3000, 3000), 25)
+islands_y = random.sample(range(-3000, 3000), 25)
+
+for i in range(25):
+    isle = island.Island(f'islands/isle_{i+1}.png', (islands_x[i], islands_y[i]))
+    all_sprites.add(isle)
 
 pygame.init()
 
@@ -46,6 +55,7 @@ def main():
         raft.handle_event(event)
         camera.update(raft, screen_width, screen_height)
         screen.fill(WATER)
+        #screen.blit(island.image, (12, 24))
         for entity in all_sprites:
             screen.blit(entity.image, camera.apply(entity))
         
