@@ -4,6 +4,7 @@ import pygame
 import raft
 import camera
 import island
+import garbage
 #import cell
 
 os.environ['SDL_VIDEO_CENTERED'] = '1'
@@ -15,14 +16,20 @@ WATER = (65,159,204)
 
 raft = raft.Raft()
 all_sprites = pygame.sprite.Group()
-all_sprites.add(raft)
 
-islands_x = random.sample(range(-3000, 3000), 25)
-islands_y = random.sample(range(-3000, 3000), 25)
+gargabe_x = random.sample(range(-10000, 10000), 3000)
+gargabe_y = random.sample(range(-10000, 10000), 3000)
+for i in range(3000):
+    g = garbage.Garbage((gargabe_x[i], gargabe_y[i]))
+    all_sprites.add(g)
 
+islands_x = random.sample(range(-10000, 10000), 25)
+islands_y = random.sample(range(-10000, 10000), 25)
 for i in range(25):
     isle = island.Island(f'islands/isle_{i+1}.png', (islands_x[i], islands_y[i]))
     all_sprites.add(isle)
+
+all_sprites.add(raft)
 
 pygame.init()
 
@@ -59,8 +66,8 @@ def main():
         for entity in all_sprites:
             screen.blit(entity.image, camera.apply(entity))
         
-        print(raft.rect.x)
-        print(raft.rect.y)
+        #print(raft.rect.x)
+        #print(raft.rect.y)
         #grid.handle_event(screen, event)
 
         pygame.display.update()
