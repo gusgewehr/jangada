@@ -107,6 +107,6 @@ class Raft(pygame.sprite.Sprite):
                 self.update('stand_down')
 
     def change_image(self, clipped_rect):
-        self.sheet = pygame.image.load('raft-move.png' if self.moving else 'raft_idle.png') #carrega imagem
+        self.sheet = pygame.image.load('raft-move.webp' if self.moving else 'raft_idle.webp') #carrega imagem
         self.sheet.set_clip(pygame.Rect(self.get_frame(clipped_rect)))
         self.image = self.sheet.subsurface(self.sheet.get_clip()) #pega a área retangular definida e seta como imagem do sprite
