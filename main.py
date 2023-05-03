@@ -26,7 +26,7 @@ for i in range(3000):
 islands_x = random.sample(range(-10000, 10000), 25)
 islands_y = random.sample(range(-10000, 10000), 25)
 for i in range(25):
-    isle = island.Island(f'islands/isle_{i+1}.png', (islands_x[i], islands_y[i]))
+    isle = island.Island(f'islands/isle-{i+1}.webp', (islands_x[i], islands_y[i]))
     all_sprites.add(isle)
 
 all_sprites.add(raft)
