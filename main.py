@@ -5,6 +5,7 @@ import raft
 import camera
 import island
 import garbage
+import inspect
 #import cell
 
 os.environ['SDL_VIDEO_CENTERED'] = '1'
@@ -16,18 +17,25 @@ WATER = (65,159,204)
 
 raft = raft.Raft()
 all_sprites = pygame.sprite.Group()
+garbage_group = pygame.sprite.Group()
+island_group = pygame.sprite.Group()
+collide_group = pygame.sprite.Group()
 
 gargabe_x = random.sample(range(-10000, 10000), 3000)
 gargabe_y = random.sample(range(-10000, 10000), 3000)
 for i in range(3000):
     g = garbage.Garbage((gargabe_x[i], gargabe_y[i]))
     all_sprites.add(g)
+    garbage_group.add(g)
+    collide_group.add(g)
 
 islands_x = random.sample(range(-10000, 10000), 25)
 islands_y = random.sample(range(-10000, 10000), 25)
 for i in range(25):
     isle = island.Island(f'islands/isle-{i+1}.webp', (islands_x[i], islands_y[i]))
     all_sprites.add(isle)
+    island_group.add(isle)
+    collide_group.add(isle)
 
 all_sprites.add(raft)
 
@@ -69,6 +77,14 @@ def main():
         #print(raft.rect.x)
         #print(raft.rect.y)
         #grid.handle_event(screen, event)
+
+        collision_list = pygame.sprite.spritecollide(raft,collide_group,False)
+        for item in collision_list:
+            if isinstance(item, island.Island):
+                print('colidiu com uma ilha')
+            elif isinstance(item, garbage.Garbage):
+                item.kill()
+                print('colidiu com um lixo')
 
         pygame.display.update()
 
