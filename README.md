@@ -8,12 +8,3 @@ Trabalho avaliativo para a matéria de Computação Gráfica. Consiste em um jog
 * Coloque todos os arquivos usados (exceto main.py) na pasta dist
 * Se clicar no .EXE é pra executar
 ### Criando instalador
-* Clique na pasta e abra com o 7zip
-* Formato do arquivo compactado: 7z
-* Nivel da compressão: Normal
-* Método de compressão: LZMA2
-* Tamanho do dicionário: 16MB
-* Tamanho da palavra: 32
-* Tamanho do bloco sólido: 2GB
-* Selecione criar arquivo compactado SFX
- ![image](https://github.com/gusgewehr/jangada/assets/39381045/cbb3834d-f44e-42e6-b4cd-ab6ea37855c4)
