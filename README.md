@@ -8,3 +8,5 @@ Trabalho avaliativo para a matéria de Computação Gráfica. Consiste em um jog
 * Coloque todos os arquivos usados (exceto main.py) na pasta dist
 * Se clicar no .EXE é pra executar
 ### Criando instalador
+* Baixar [Inno Setup](https://jrsoftware.org/isdl.php)
+* [Vídeo de Exemplo](https://youtu.be/1CQujyZ409w)
