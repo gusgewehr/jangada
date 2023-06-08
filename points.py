@@ -3,7 +3,7 @@ import pygame
 
 class Points():
     def __init__(self):
-        
+        self.total_points = 0
         self.points_dict = {
             "Eletrônico": {
                 "points": 0,
@@ -37,21 +37,29 @@ class Points():
             }
         }
 
+    
+        
         
     def add_points(self, type):
-        type_points_dict  = self.points_dict[type]
+        type_points_dict  = self.points_dict[type] 
         type_points_dict["points"] +=1
 
+    def decrese_points(self, type):
+        type_points_dict  = self.points_dict[type]
+        if type_points_dict["points"] >  0:
+            type_points_dict["points"] -= 1
+            self.total_points += 1
+        
     def print_points_on_screen(self, screen,):
         font = pygame.font.SysFont(None, 32)
         type_options = ("Eletrônico", "Plástico", "Metal", "Vidro", "Papel", "Orgânico")
         WHITE_TEXT = (255,255,255)
         for values in self.points_dict.values():
-        #for key in self.points_dict:
-            #values = self.points_dict[key]    
             img = font.render(str(values["points"]), True, WHITE_TEXT)
             screen.blit(img, (values["x"], values["y"]))
-            
+        
+        total_points = font.render(str(self.total_points), True, WHITE_TEXT)
+        screen.blit(total_points, (screen.get_width()/2, 0))
 
 
 

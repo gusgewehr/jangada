@@ -12,7 +12,7 @@ import inspect
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 clock = pygame.time.Clock()
 
-pontos = points.Points()
+Points = points.Points()
 
 #grid = cell.Cell("cell")
 
@@ -100,19 +100,23 @@ def main():
         #print(raft.rect.y)
         #grid.handle_event(screen, event)
         
-        
         collision_list = pygame.sprite.spritecollide(raft,collide_group,False)
         for item in collision_list:
             if isinstance(item, island.Island):
-                item.kill()
+                item.item_drop_timer += 1
+                if item.item_drop_timer >= 25:                    
+                    Points.decrese_points(item.type)
+                    item.item_drop_timer = 0
             elif isinstance(item, garbage.Garbage):
                 item.grab_counter += 1
                 if item.grab_counter >= 15:
                     item.kill()
-                    pontos.add_points(item.type)
+                    Points.add_points(item.type)
+        
+        
         
         screen.blit(ui, (0,0)) 
-        pontos.print_points_on_screen(screen)    
+        Points.print_points_on_screen(screen)    
         
         pygame.display.update()
 

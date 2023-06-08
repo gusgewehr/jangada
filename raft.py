@@ -1,4 +1,5 @@
 import pygame
+import islands
 
 class Raft(pygame.sprite.Sprite):
     def __init__(self):
@@ -38,6 +39,7 @@ class Raft(pygame.sprite.Sprite):
         state_ant = self.state
         self.frame_change += 1
         moving_ant = self.moving
+
 
         if direction == 'left':
             self.rect.x -= 5
@@ -84,7 +86,7 @@ class Raft(pygame.sprite.Sprite):
         if event.type == pygame.QUIT:
             game_over = True
 
-        if event.type == pygame.KEYDOWN:
+        if event.type == pygame.KEYDOWN: #temos q impedir q a jangada atravesse as ilhas
 
             if event.key == pygame.K_LEFT:
                 self.update('left') #chama o método update passando um parâmetro
