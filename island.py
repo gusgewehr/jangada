@@ -2,16 +2,16 @@ import pygame
 import random
 
 class Island(pygame.sprite.Sprite):
-    def __init__(self, name, start_pos):
+    def __init__(self, start_pos, type):
         super().__init__()
 
-        type_options = ["Eletrônico", "Plástico", "Metal", "Vidro", "Papel", "Orgânico"]
+        #type_options = ["Eletrônico", "Plástico", "Metal", "Vidro", "Papel", "Orgânico"]
 
-        type = random.choices(type_options)
+        #type = random.choices(type_options)
 
         self.item_drop_timer = 0
 
-        self.type = type[0]
+        self.type = type
 
 
         img_dict  = {

@@ -44,9 +44,11 @@ class Points():
         type_points_dict  = self.points_dict[type] 
         type_points_dict["points"] +=1
 
-    def decrese_points(self, type):
+    def decrese_points(self, type, sound):
         type_points_dict  = self.points_dict[type]
         if type_points_dict["points"] >  0:
+            sound.set_volume(0.1)
+            sound.play()
             type_points_dict["points"] -= 1
             self.total_points += 1
         
