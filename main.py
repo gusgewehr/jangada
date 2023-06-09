@@ -45,7 +45,13 @@ for i in range(3):
 
 all_sprites.add(raft)
 
+pygame.mixer.pre_init(44100, -16, 2, 2048)
+
 pygame.init()
+
+pygame.mixer.init()
+
+pygame.mixer.music.load('sounds/menu.mp3')
 
 pygame.event.set_blocked(pygame.MOUSEMOTION)
 
@@ -59,6 +65,8 @@ camera.update(raft, screen_width, screen_height)
 
 ui = pygame.image.load('ui.png').convert()
 
+item_sound = pygame.mixer.Sound('sounds/item.mp3')
+
 def main():
     
     running = True
@@ -68,6 +76,8 @@ def main():
     
 
     pygame.display.update()
+    pygame.mixer.music.play(-1)
+    pygame.mixer.music.set_volume(0.5)
 
     while running:
         # event handling, gets all event from the event queue
@@ -82,6 +92,10 @@ def main():
                 if atualScreen == 'menu':
                     atualScreen = 'guide'
                 elif atualScreen == 'guide':
+                    pygame.mixer.music.stop()
+                    pygame.mixer.music.load('sounds/ocean.mp3')
+                    pygame.mixer.music.set_volume(0.05)
+                    pygame.mixer.music.play(-1)
                     atualScreen = 'game'
 
         if atualScreen == 'menu':
@@ -111,6 +125,8 @@ def main():
                         Points.decrese_points(item.type)
                         item.item_drop_timer = 0
                 elif isinstance(item, garbage.Garbage):
+                    item_sound.set_volume(0.1)
+                    item_sound.play()
                     item.grab_counter += 1
                     if item.grab_counter >= 15:
                         item.kill()
