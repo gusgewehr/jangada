@@ -45,8 +45,6 @@ for i in range(3):
 
 all_sprites.add(raft)
 
-
-
 pygame.init()
 
 pygame.event.set_blocked(pygame.MOUSEMOTION)
@@ -83,14 +81,14 @@ def main():
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
                 if atualScreen == 'menu':
                     atualScreen = 'guide'
+                elif atualScreen == 'guide':
+                    atualScreen = 'game'
 
         if atualScreen == 'menu':
             menu()
             raft_menu.update('stand_right')
         elif atualScreen == 'guide':
-            screen.fill(WATER)
-        elif atualScreen == 'loading':
-            screen.fill(WATER)
+            guide()
         else:
             screen.fill(WATER)
             raft.handle_event(event)
@@ -136,6 +134,22 @@ def menu():
     draw_text("PRESSIONE [ENTER] PARA INICIAR", 30, screen_width/2, screen_height/1.5, BLACK_TEXT)
     draw_text("PRESSIONE [ESC] PARA SAIR", 25, screen_width/2, (screen_height/1.5) + 50, BLACK_TEXT)
     draw_text("Eduardo Hüther, Gustavo Gewehr", 12, screen_width/2, screen_height - 50, BLACK_TEXT)
+
+def guide():
+    screen.fill(WATER)
+    draw_text("INSTRUÇÕES", 30, screen_width/2, 100, BLACK_TEXT)
+    draw_text("- COLETE OS LIXOS NO MAR COM A SUA JANGADA!", 20, screen_width/2, 150, BLACK_TEXT)
+    draw_text("- LEVE OS LIXOS QUE COLETOU PARA AS ILHAS E GANHE PONTOS!", 20, screen_width/2, 180, BLACK_TEXT)
+    draw_text("- AO LONGO DO TEMPO A JANGADA IRÁ PERDER VIDA, COLETE LIXOS PARA RECUPERAR VIDA!", 20, screen_width/2, 210, BLACK_TEXT)
+    draw_text("- SE A VIDA CHEGAR EM 0 (ZERO) O JOGO ACABA!", 20, screen_width/2, 240, BLACK_TEXT)
+    draw_text("UTILIZE AS SETINHAS DO TECLADO PARA MOVER A JANGADA", 30, screen_width/2, 280, BLACK_TEXT)
+    arrow_keys = pygame.image.load('arrowkeys.png').convert_alpha()
+    arrow_keys = pygame.transform.scale(arrow_keys, (150, 85))
+    keys = arrow_keys.get_rect()
+    keys.midtop = (screen_width/2, 350)
+    screen.blit(arrow_keys, keys)
+    draw_text("PRESSIONE [ENTER] PARA INICIAR O JOGO", 30, screen_width/2, screen_height/1.5, BLACK_TEXT)
+
 
 def draw_text(text, size, x, y, color):
     '''draw text to screen'''
