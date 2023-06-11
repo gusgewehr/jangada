@@ -80,10 +80,18 @@ screen_width,screen_height = info.current_w,info.current_h
 
 screen = pygame.display.set_mode((screen_width,screen_height), pygame.FULLSCREEN)
 
+# screen_width = 1920
+# screen_height = 1080
+
+# screen = pygame.display.set_mode((screen_width, screen_height))
+
 camera = camera.Camera(screen_width, screen_height)
 camera.update(raft, screen_width, screen_height)
 
-ui = pygame.image.load('ui.png').convert()
+ui = pygame.image.load('ui2.png')
+ratio_resize_width = screen_width/ui.get_width()
+ratio_resize_height = screen_height/1080
+ui = pygame.transform.scale(ui, (ui.get_width()*ratio_resize_width, ui.get_height()*ratio_resize_height))
 
 item_sound = pygame.mixer.Sound('sounds/item.mp3')
 deliver_sound = pygame.mixer.Sound('sounds/deliver.mp3')
@@ -112,7 +120,6 @@ def main():
                 print("posição do mouse: "+str(event.pos))
             elif atualScreen == 'endgame':
                 if event.type == pygame.KEYDOWN:
-                    print('essa mer5da qui'+str(event))
                     if event.key == pygame.K_RETURN:
                         if text != '':
                             with open('ranking.txt', 'a') as f:
@@ -159,10 +166,11 @@ def main():
         
             for ilha in island_group:
                 gets_hit = pygame.sprite.spritecollide(ilha, garbage_group, False)
-            
-            for item in gets_hit:
+                for item in gets_hit:
                     if isinstance(item, garbage.Garbage):
-                        item.kill()    
+                        item.kill()
+            
+                
                     
             collision_list = pygame.sprite.spritecollide(raft,collide_group,False)
             
@@ -185,13 +193,13 @@ def main():
                         Points.add_points(item.type)
                         raft.life += 50
             screen.blit(ui, (0,0)) 
-            Points.print_points_on_screen(screen)
+            Points.print_points_on_screen(screen, ratio_resize_width, ratio_resize_height)
             
-            total_life_width = 300
+            total_life_width = 600*ratio_resize_width
             life_rect_width = ((raft.life/1000)*total_life_width)
 
-            pygame.draw.rect(screen, BLACK_TEXT, pygame.Rect(1690, 24, total_life_width, 50), 0)
-            pygame.draw.rect(screen, GREEN, pygame.Rect(1690, 24, life_rect_width, 50), 0)
+            pygame.draw.rect(screen, BLACK_TEXT, pygame.Rect(1281*ratio_resize_width, 24*ratio_resize_height, total_life_width, 35*ratio_resize_height), 0)
+            pygame.draw.rect(screen, GREEN, pygame.Rect(1281*ratio_resize_width, 24*ratio_resize_height, life_rect_width, 35*ratio_resize_height), 0)
             
             if not is_colliding:
                 raft.life -= 1
@@ -227,15 +235,23 @@ def guide():
     screen.fill(WATER)
     draw_text("INSTRUÇÕES", 30, screen_width/2, 100, BLACK_TEXT)
     draw_text("- COLETE OS LIXOS NO MAR COM A SUA JANGADA!", 20, screen_width/2, 150, BLACK_TEXT)
-    draw_text("- LEVE OS LIXOS QUE COLETOU PARA AS ILHAS E GANHE PONTOS!", 20, screen_width/2, 180, BLACK_TEXT)
+    draw_text("- LEVE OS LIXOS QUE COLETOU PARA AS ILHAS COM A COR DE DESCARTE CORRETA E GANHE PONTOS!", 20, screen_width/2, 180, BLACK_TEXT)
     draw_text("- AO LONGO DO TEMPO A JANGADA IRÁ PERDER VIDA, COLETE LIXOS PARA RECUPERAR VIDA!", 20, screen_width/2, 210, BLACK_TEXT)
     draw_text("- SE A VIDA CHEGAR EM 0 (ZERO) O JOGO ACABA!", 20, screen_width/2, 240, BLACK_TEXT)
     draw_text("UTILIZE AS SETINHAS DO TECLADO PARA MOVER A JANGADA", 30, screen_width/2, 280, BLACK_TEXT)
+    draw_text("SEGURE A SETINHA DO TECLADO EM DIREÇÃO A ILHA PARA DESCARTAR O LIXO E GANHAR PONTOS", 30, screen_width/2, 320, BLACK_TEXT)
+    draw_text("EXEMPLO - LEVE O PLASTICO PARA A ILHA DE COR VERMELHA", 20, screen_width/2, 470, BLACK_TEXT)
     arrow_keys = pygame.image.load('arrowkeys.png').convert_alpha()
     arrow_keys = pygame.transform.scale(arrow_keys, (150, 85))
     keys = arrow_keys.get_rect()
-    keys.midtop = (screen_width/2, 350)
+    keys.midtop = (screen_width/2, 370)
     screen.blit(arrow_keys, keys)
+    arrow_keys = pygame.image.load('example.png').convert_alpha()
+    arrow_keys = pygame.transform.scale(arrow_keys, (412, 163))
+    keys = arrow_keys.get_rect()
+    keys.midtop = (screen_width/2, 500)
+    screen.blit(arrow_keys, keys)
+
     draw_text("PRESSIONE [ENTER] PARA INICIAR O JOGO", 30, screen_width/2, screen_height/1.5, BLACK_TEXT)
 
 def endgame(text):
@@ -286,33 +302,33 @@ def reset():
     points.points_dict = {
             "Eletrônico": {
                 "points": 0,
-                "x": 40,
-                "y": 20,
+                "x": 44,
+                "y": 32,
             },
             "Plástico": {
                 "points": 0,
                 "x": 170,
-                "y": 20,
+                "y": 32,
             },
             "Metal": {
                 "points": 0,
                 "x": 297,
-                "y": 20,
+                "y": 32,
             },
             "Vidro": {
                 "points": 0,
                 "x": 424,
-                "y": 20,
+                "y": 32,
             },
             "Papel": {
                 "points": 0,
                 "x": 553,
-                "y": 20,
+                "y": 32,
             },
             "Orgânico": {
                 "points": 0,
                 "x": 674,
-                "y": 20,
+                "y": 32,
             }
         }
     raft.life = 1000

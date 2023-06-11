@@ -10,33 +10,33 @@ class Points():
         self.points_dict = {
             "Eletrônico": {
                 "points": 0,
-                "x": 40,
-                "y": 20,
+                "x": 44,
+                "y": 32,
             },
             "Plástico": {
                 "points": 0,
                 "x": 170,
-                "y": 20,
+                "y": 32,
             },
             "Metal": {
                 "points": 0,
                 "x": 297,
-                "y": 20,
+                "y": 32,
             },
             "Vidro": {
                 "points": 0,
                 "x": 424,
-                "y": 20,
+                "y": 32,
             },
             "Papel": {
                 "points": 0,
                 "x": 553,
-                "y": 20,
+                "y": 32,
             },
             "Orgânico": {
                 "points": 0,
                 "x": 674,
-                "y": 20,
+                "y": 32,
             }
         }
 
@@ -59,16 +59,16 @@ class Points():
             self.total_points += 1
             
         
-    def print_points_on_screen(self, screen,):
-        font = pygame.font.SysFont(None, 32)
+    def print_points_on_screen(self, screen, ratio_resize_width, ratio_resize_height):
+        font = pygame.font.SysFont(None, int(32*ratio_resize_height))
         type_options = ("Eletrônico", "Plástico", "Metal", "Vidro", "Papel", "Orgânico")
         WHITE_TEXT = (255,255,255)
         for values in self.points_dict.values():
             img = font.render(str(values["points"]), True, WHITE_TEXT)
-            screen.blit(img, (values["x"], values["y"]))
+            screen.blit(img, (values["x"]*ratio_resize_width, values["y"]*ratio_resize_height))
         
         total_points = font.render(str(self.total_points), True, WHITE_TEXT)
-        screen.blit(total_points, (screen.get_width()/2, 0))
+        screen.blit(total_points, (826*ratio_resize_width, 61*ratio_resize_height))
 
 
 
