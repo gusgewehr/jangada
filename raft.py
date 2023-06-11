@@ -7,6 +7,8 @@ class Raft(pygame.sprite.Sprite):
 
         self.moving = False
 
+        self.life = 1000
+
         self.frame = 0
         self.frame_change = 0
         self.left_states = { 0: (9, 472, 144, 188), 1: (174, 472, 144, 188), 2: (336, 472, 144, 188), 3: (500, 472, 144, 188) }

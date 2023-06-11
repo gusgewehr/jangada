@@ -1,7 +1,10 @@
 import pygame
+import raft
 
 
 class Points():
+    raft = raft.Raft()
+
     def __init__(self):
         self.total_points = 0
         self.points_dict = {
@@ -38,6 +41,8 @@ class Points():
         }
 
     
+
+    
         
         
     def add_points(self, type):
@@ -45,12 +50,14 @@ class Points():
         type_points_dict["points"] +=1
 
     def decrese_points(self, type, sound):
+        
         type_points_dict  = self.points_dict[type]
         if type_points_dict["points"] >  0:
             sound.set_volume(0.1)
             sound.play()
             type_points_dict["points"] -= 1
             self.total_points += 1
+            
         
     def print_points_on_screen(self, screen,):
         font = pygame.font.SysFont(None, 32)
