@@ -7,7 +7,7 @@ class Raft(pygame.sprite.Sprite):
 
         self.moving = False
 
-        self.life = 1000
+        self.life = 1500
 
         self.frame = 0
         self.frame_change = 0

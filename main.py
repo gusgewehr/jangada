@@ -7,14 +7,13 @@ import island
 import garbage
 import points
 import inspect
-#import cell
+import animate_garbage_collection
 
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 clock = pygame.time.Clock()
 
 Points = points.Points()
 
-#grid = cell.Cell("cell")
 
 WATER = (65,159,204)
 WHITE_TEXT = (255,255,255)
@@ -52,13 +51,6 @@ for i in range(len(islands)):
     island_group.add(isle)
     collide_group.add(isle)
 
-#islands_x = random.sample(range(-5000, 5000), 6)
-#islands_y = random.sample(range(-5000, 5000), 6)
-#for i in range(6):
-#    isle = island.Island(f'islands/isle-{i+1}.webp', (islands_x[i], islands_y[i]))
-#    all_sprites.add(isle)
-#    island_group.add(isle)
-#    collide_group.add(isle)
 
 all_sprites.add(raft)
 
@@ -105,6 +97,7 @@ def main():
     pygame.mixer.music.play(-1)
     pygame.mixer.music.set_volume(0.5)
     text = ''
+    cur_animation = None
 
     
 
@@ -177,10 +170,21 @@ def main():
             is_colliding = False
             for item in collision_list:
                 if isinstance(item, island.Island):
-                    item.item_drop_timer += 1
-                    if item.item_drop_timer >= 25:                    
-                        Points.decrese_points(item.type, deliver_sound)
-                        item.item_drop_timer = 0
+                    raft_center = [(raft.rect.x+raft.rect.width/2), (raft.rect.y+raft.rect.height/2)]
+                    island_center = [(item.rect.x+item.rect.width/2), (item.rect.y+item.rect.height/2)]
+                    tipo_ilha = item.type
+                    type_points_dict  = Points.points_dict[tipo_ilha]
+                    if type_points_dict["points"] >  0:
+                        if item.item_drop_timer == 0:
+                            cur_animation = animate_garbage_collection.AnimateGarbageColletion(raft_center,island_center, 25, tipo_ilha)
+                            all_sprites.add(cur_animation)
+                        else:
+                            cur_animation.update_frame(item.item_drop_timer)
+                        item.item_drop_timer += 1
+                        if item.item_drop_timer >= 25:                                                
+                            Points.decrese_points(item.type, deliver_sound)
+                            item.item_drop_timer = 0
+                            cur_animation.kill()
                     raft.rect.x = raft_last_position[0]
                     raft.rect.y = raft_last_position[1]
                     is_colliding = True
@@ -191,12 +195,14 @@ def main():
                         item_sound.play()
                         item.kill()
                         Points.add_points(item.type)
-                        raft.life += 50
+                        raft.life += 75
+            if is_colliding == False and cur_animation in all_sprites:
+                cur_animation.kill()
             screen.blit(ui, (0,0)) 
             Points.print_points_on_screen(screen, ratio_resize_width, ratio_resize_height)
             
             total_life_width = 600*ratio_resize_width
-            life_rect_width = ((raft.life/1000)*total_life_width)
+            life_rect_width = ((raft.life/1500)*total_life_width)
 
             pygame.draw.rect(screen, BLACK_TEXT, pygame.Rect(1281*ratio_resize_width, 24*ratio_resize_height, total_life_width, 35*ratio_resize_height), 0)
             pygame.draw.rect(screen, GREEN, pygame.Rect(1281*ratio_resize_width, 24*ratio_resize_height, life_rect_width, 35*ratio_resize_height), 0)
@@ -212,10 +218,7 @@ def main():
 
         garbage_spawn()
 
-        clock.tick(60)
-
-        
-
+        clock.tick(60)      
 
         
     pygame.quit()
@@ -331,7 +334,7 @@ def reset():
                 "y": 32,
             }
         }
-    raft.life = 1000
+    raft.life = 1500
 
 
 

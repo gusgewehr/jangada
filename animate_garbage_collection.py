@@ -1,26 +1,18 @@
 import pygame
 import random
 
-class Garbage(pygame.sprite.Sprite):
 
-   
+class AnimateGarbageColletion(pygame.sprite.Sprite):
 
-    def __init__(self, start_pos):
+    def __init__(self, start_pos, end_pos, time, type):
         super().__init__()
 
-        type_options = ["Eletrônico", "Plástico", "Metal", "Vidro", "Papel", "Orgânico"]
-
-        type = random.choices(type_options)
-
-        self.grab_counter = 0
-
-        self.type = type[0]
+        self.type = type
 
         self.clip_dict  = {
             "Eletrônico": [pygame.Rect(24,21,95,117),#celular
                            pygame.Rect(175,20,75,149),#pilha
-                           pygame.Rect(317,40,64,92),#lampada
-                            
+                           pygame.Rect(317,40,64,92),#lampada                
             ],
             "Plástico": [pygame.Rect(443,24,163,183),#sacola
                            pygame.Rect(684,30,95,159),#garrafa_amassada
@@ -50,20 +42,31 @@ class Garbage(pygame.sprite.Sprite):
             ]
         }
 
-        sprite = random.choice(self.clip_dict[self.type])
-
+        self.sprite = random.choice(self.clip_dict[self.type])
 
         self.sheet = pygame.image.load('garbage.png') #carrega imagem
-        self.sheet.set_clip(sprite)
+        self.sheet.set_clip(self.sprite)
         #self.sheet.set_clip(pygame.Rect(0, 0, 1002, 692)) #define uma área retangular
         self.image = self.sheet.subsurface(self.sheet.get_clip()) #pega a área retangular definida e seta como imagem do sprite
-        self.image = pygame.transform.scale(self.image, (sprite.size[0]/2.5, sprite.size[1]/2.5))
+        self.image = pygame.transform.scale(self.image, (self.sprite.size[0]/2.5, self.sprite.size[1]/2.5))
         self.rect = self.image.get_rect()
 
         self.rect.x = start_pos[0]
         self.rect.y = start_pos[1]
 
-    
+
+        self.route = []
+
+        for t in range(time+1,1, -1):
+            delta_pos_x = end_pos[0] - start_pos[0]
+            cur_pos_x = start_pos[0]+(delta_pos_x/t)
+            delta_pos_y = end_pos[1] - start_pos[1]
+            cur_pos_y = start_pos[1]+(delta_pos_y/t)
+            self.route.append([cur_pos_x,cur_pos_y])
 
         
-
+    def update_frame(self, frame):
+        cur_pos = self.route[frame]
+        self.rect.x = cur_pos[0]
+        self.rect.y = cur_pos[1]
+        #self.image = pygame.transform.scale(self.image, (self.sprite.size[0]/(2.5*frame), self.sprite.size[1]/2.5*frame))
