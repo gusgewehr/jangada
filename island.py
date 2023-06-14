@@ -25,7 +25,7 @@ class Island(pygame.sprite.Sprite):
 
         sprite = random.choice(img_dict[self.type])
 
-        self.sheet = pygame.image.load('islands/novas_ilhas/'+sprite) #carrega imagem
+        self.sheet = pygame.image.load('novas_ilhas/'+sprite) #carrega imagem
         self.sheet.set_clip(pygame.Rect(0, 0, 500, 500)) #define uma área retangular
         self.image = self.sheet.subsurface(self.sheet.get_clip()) #pega a área retangular definida e seta como imagem do sprite
         #self.image = pygame.transform.scale(self.image, (1024, 1024))

@@ -11,6 +11,7 @@ import animate_garbage_collection
 
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 clock = pygame.time.Clock()
+current_user = os.getlogin()
 
 Points = points.Points()
 
@@ -115,7 +116,7 @@ def main():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
                         if text != '':
-                            with open('ranking.txt', 'a') as f:
+                            with open(f'C:/Users/{current_user}/documents/ranking.txt', 'a') as f:
                                 f.write(f"{text}-{Points.total_points} \n")
                             text = ''
                             Points.total_points = 0
@@ -170,8 +171,8 @@ def main():
             is_colliding = False
             for item in collision_list:
                 if isinstance(item, island.Island):
-                    raft_center = [(raft.rect.x+raft.rect.width/2), (raft.rect.y+raft.rect.height/2)]
-                    island_center = [(item.rect.x+item.rect.width/2), (item.rect.y+item.rect.height/2)]
+                    raft_center = [(raft.rect.x+(raft.rect.width/2)), (raft.rect.y+(raft.rect.height/2))]
+                    island_center = [(item.rect.x+(item.rect.width/2)), (item.rect.y+(item.rect.height/2))]
                     tipo_ilha = item.type
                     type_points_dict  = Points.points_dict[tipo_ilha]
                     if type_points_dict["points"] >  0:
@@ -195,7 +196,7 @@ def main():
                         item_sound.play()
                         item.kill()
                         Points.add_points(item.type)
-                        raft.life += 75
+                        raft.life += 50
             if is_colliding == False and cur_animation in all_sprites:
                 cur_animation.kill()
             screen.blit(ui, (0,0)) 
@@ -276,7 +277,7 @@ def endgame(text):
     # Blit the input_box rect.
     
     try:
-        with open('ranking.txt', 'r') as f:
+        with open(f'C:/Users/{current_user}/documents/ranking.txt', 'r') as f:
             lines = f.readlines()
             for line in lines:
                 line_content = line.split('-')
